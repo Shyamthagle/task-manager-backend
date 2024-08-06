@@ -7,14 +7,13 @@ const connectDB = async () => {
         ? process.env.MONGO_URL_REMOTE
         : process.env.MONGO_URL_LOCAL;
 
-    await mongoose.connect(mongo_Url, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    // Remove deprecated options
+    await mongoose.connect(mongo_Url);
 
     console.log("MongoDB connected successfully");
   } catch (error) {
-    console.error("Failed to connect to MongoDB", error);
+    console.error("Failed to connect to MongoDB:", error.message);
+    console.error("Stack trace:", error.stack);
     process.exit(1); // Exit the process with a failure code
   }
 };
