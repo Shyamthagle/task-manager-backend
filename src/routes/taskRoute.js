@@ -9,10 +9,10 @@ const {
 
 const router = express.Router();
 
-router.post('/tasks', createTask);
-router.get('/tasks', getTasks);
-router.get('/tasks/:id', getTask);
-router.patch('/tasks/:id', updateTask);
-router.delete('/tasks/:id', deleteTask);
+router.post('/', createTask);
+router.get('/', getTasks);
+router.get('/:id', getTask);
+router.put('/:id', updateTask);
+router.delete('/:id', deleteTask);
 
 module.exports = router;

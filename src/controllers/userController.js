@@ -125,8 +125,6 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-
-
 const logoutUser = async (req, res) => {
   try {
     const authHeader = req.header("Authorization");
@@ -177,23 +175,32 @@ const updateUserProfile = async (req, res) => {
     const userId = req.user._id;
 
     if (!firstName || !lastName || !email) {
-      return res.status(400).json({ success: false, message: "Please provide all required fields" });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Please provide all required fields",
+        });
     }
 
     const user = await User.findByIdAndUpdate(
       userId,
       { firstName, lastName, email },
       { new: true, runValidators: true }
-    );
+    ).select(selectattributes.join(" "));
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     return res.status(200).json({ success: true, data: user });
   } catch (error) {
     console.error("Error in updateUserProfile:", error);
-    return res.status(500).json({ success: false, message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -203,5 +210,4 @@ module.exports = {
   logoutUser,
   getUserProfile,
   updateUserProfile,
-  // deleteUserProfile,
 };

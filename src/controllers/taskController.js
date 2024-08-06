@@ -1,63 +1,98 @@
-const Task = require('../models/task');
+const Task = require("../models/task");
 
-// Create a new task
+const selectattributes = ["_id", "title", "description", "completed"];
+
 const createTask = async (req, res) => {
   try {
-    const task = new Task(req.body);
+    const { title, description, completed } = req.body;
+
+    if (!title || !description || !completed) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and description both are required",
+      });
+    }
+
+    const data = {
+      title: title.toUpperCase(),
+      description: description.trim(),
+      completed,
+    };
+
+    const task = new Task(data);
     await task.save();
-    res.status(201).send(task);
+
+    const newTask = await Task.findById(task._id).select(selectattributes);
+    res.status(201).json({ success: true, data: newTask });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
-// Get all tasks
 const getTasks = async (req, res) => {
-  console.log('task----------------------------------');
-  
   try {
-    const tasks = await Task.find({});
-    res.status(200).send(tasks);
+    const tasks = await Task.find({}).select(selectattributes);
+    res.status(200).json({ success: true, data: tasks });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
-// Get a single task
 const getTask = async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findById(req.params.id).select(selectattributes);
     if (!task) {
-      return res.status(404).send();
+      return res
+        .status(404)
+        .json({ success: false, message: "Task not found" });
     }
-    res.status(200).send(task);
+    res.status(200).json({ success: true, data: task });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
-// Update a task
 const updateTask = async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdates = ['title', 'description', 'completed'];
-  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-  if (!isValidOperation) {
-    return res.status(400).send({ error: 'Invalid updates!' });
-  }
-
   try {
-    const task = await Task.findById(req.params.id);
+    const taskId = req.params.id;
+    const { title, description, completed } = req.body;
 
-    if (!task) {
-      return res.status(404).send();
+    if (!taskId) {
+      return res.status(400).json({
+        success: false,
+        message: "Task ID is required",
+      });
     }
 
-    updates.forEach((update) => (task[update] = req.body[update]));
-    await task.save();
-    res.send(task);
+    if (!title || !description || !completed) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    const data = {
+      title: title.toUpperCase(),
+      description: description.trim(),
+      completed,
+    };
+
+    const updatedTask = await Task.findByIdAndUpdate(
+      taskId,
+      { ...data },
+      { new: true, runValidators: true }
+    ).select(selectattributes.join(" "));
+
+    if (!updatedTask) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    res.status(200).json({ success: true, data: updatedTask });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -65,14 +100,14 @@ const updateTask = async (req, res) => {
 const deleteTask = async (req, res) => {
   try {
     const task = await Task.findByIdAndDelete(req.params.id);
-
     if (!task) {
-      return res.status(404).send();
+      return res
+        .status(404)
+        .json({ success: false, message: "Task not found" });
     }
-
-    res.send(task);
+    res.status(200).json({ success: true, message: "Task deleted" });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -81,5 +116,5 @@ module.exports = {
   getTasks,
   getTask,
   updateTask,
-  deleteTask
+  deleteTask,
 };
