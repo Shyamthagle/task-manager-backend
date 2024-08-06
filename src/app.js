@@ -10,14 +10,14 @@ require("dotenv").config();
 
 const app = express();
 
-const corsOptions = {
-  origin: process.env.CLIENT_DEV_DOMAIN,
-  credentials: true,
-  methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
-};
+// const corsOptions = {
+//   origin: process.env.CLIENT_DEV_DOMAIN,
+//   credentials: true,
+//   methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
+// };
 
 // Middleware
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(errorMiddleware);
 
