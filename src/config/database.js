@@ -6,7 +6,12 @@ const connectDB = async () => {
       process.env.NODE_ENV === "production"
         ? process.env.MONGO_URL_REMOTE
         : process.env.MONGO_URL_LOCAL;
-    await mongoose.connect(mongo_Url);
+
+    await mongoose.connect(mongo_Url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
     console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("Failed to connect to MongoDB", error);
