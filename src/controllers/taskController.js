@@ -1,12 +1,12 @@
 const Task = require("../models/task");
 
-const selectattributes = ["_id", "title", "description", "completed"];
+const selectAttributes = ["_id", "title", "description", "completed"];
 
 const createTask = async (req, res) => {
   try {
-    const { title, description, completed } = req.body;
+    const { title, description } = req.body;
 
-    if (!title || !description || !completed) {
+    if (!title || !description) {
       return res.status(400).json({
         success: false,
         message: "Title and description both are required",
@@ -14,18 +14,25 @@ const createTask = async (req, res) => {
     }
 
     const data = {
-      title: title.toUpperCase(),
+      title: title.trim().toUpperCase(),
       description: description.trim(),
-      completed,
     };
 
     const task = new Task(data);
     await task.save();
 
-    const newTask = await Task.findById(task._id).select(selectattributes);
-    res.status(201).json({ success: true, data: newTask });
+    const newTask = await Task.findById(task._id).select(selectAttributes);
+
+    res.status(201).json({
+      success: true,
+      data: newTask,
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    console.error("Error creating task:", error);
+    res.status(500).json({
+      success: false,
+      message: "An unexpected error occurred. Please try again later.",
+    });
   }
 };
 
