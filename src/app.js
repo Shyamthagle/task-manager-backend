@@ -30,13 +30,13 @@ const startServer = async () => {
       res.send("Hello, World!");
     });
 
-    const PORT = process.env.PORT || 8000;
+    // Set the port based on the environment
+    const PORT = process.env.NODE_ENV === 'production' ? 8000 : process.env.PORT || 3456;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
     console.error("Failed to connect to MongoDB:", error.message);
-    console.error("Stack trace:", error.stack);
     process.exit(1); // Exit the process with a failure code
   }
 };

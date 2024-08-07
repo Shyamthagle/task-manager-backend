@@ -22,7 +22,6 @@ const connectDB = async () => {
     console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("Failed to connect to MongoDB:", error.message);
-    console.error("Stack trace:", error.stack);
     process.exit(1); // Exit the process with a failure code
   }
 };
