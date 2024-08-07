@@ -1,0 +1,12 @@
+{
+    "development": {
+      "url": "mongodb://localhost:27017/task-manager"
+    },
+    "test": {
+      "url": "mongodb://localhost:27017/test_db"
+    },
+    "production": {
+      "url": "mongodb+srv://shyamthagle:OrdLmjEbZnE23laP@cluster0.6dfupmr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    }
+  }
+  

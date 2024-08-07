@@ -13,11 +13,13 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(errorMiddleware);
 
 // Routes
 app.use("/user", userRoute);
 app.use("/task", taskRoute);
+
+// Error handling middleware
+app.use(errorMiddleware);
 
 const startServer = async () => {
   try {
@@ -33,7 +35,8 @@ const startServer = async () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
-    console.error("Failed to connect to MongoDB", error);
+    console.error("Failed to connect to MongoDB:", error.message);
+    console.error("Stack trace:", error.stack);
     process.exit(1); // Exit the process with a failure code
   }
 };

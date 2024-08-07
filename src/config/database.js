@@ -1,14 +1,25 @@
 const mongoose = require("mongoose");
+const fs = require("fs");
+const path = require("path");
+require('dotenv').config(); // Ensure dotenv is loaded
+
+// Load configuration
+const configPath = path.join(__dirname, "config.json");
+const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
 
 const connectDB = async () => {
   try {
-    const mongo_Url =
-      process.env.NODE_ENV === "production"
-        ? process.env.MONGO_URL_REMOTE
-        : process.env.MONGO_URL_LOCAL;
+    const env = process.env.NODE_ENV || "development"; // Default to development if NODE_ENV is not set
+    const mongoUrl = config[env].url;
 
-    // Remove deprecated options
-    await mongoose.connect(mongo_Url);
+    if (!mongoUrl) {
+      throw new Error("MongoDB connection string is not defined in the configuration.");
+    }
+
+    await mongoose.connect(mongoUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
     console.log("MongoDB connected successfully");
   } catch (error) {
