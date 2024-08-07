@@ -100,8 +100,6 @@ const getUserProfile = async (req, res) => {
   try {
     const { _id } = req.user;
 
-    console.log("user ====", req.user);
-
     if (!_id) {
       return res
         .status(401)

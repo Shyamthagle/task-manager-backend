@@ -5,6 +5,14 @@ const selectAttributes = ["_id", "title", "description", "completed"];
 const createTask = async (req, res) => {
   try {
     const { title, description } = req.body;
+    const { _id } = req.user;
+
+    if (!_id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
 
     if (!title || !description) {
       return res.status(400).json({
@@ -16,6 +24,7 @@ const createTask = async (req, res) => {
     const data = {
       title: title.trim().toUpperCase(),
       description: description.trim(),
+      userId: _id,
     };
 
     const task = new Task(data);
@@ -38,8 +47,21 @@ const createTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({}).select(selectAttributes);
-    res.status(200).json({ success: true, data: tasks });
+    const { _id } = req.user;
+
+    if (!_id) {
+      return res.status(401).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+
+    const tasks = await Task.find({
+      userId: _id,
+    }).select(selectAttributes);
+
+    const taskCount = await Task.countDocuments({ userId: _id });
+    res.status(200).json({ success: true, count: taskCount, data: tasks });
   } catch (error) {
     res.status(500).json({ success: false, message: "Internal server error" });
   }

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-const taskSchema = new mongoose.Schema({
+const taskSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -14,6 +15,10 @@ const taskSchema = new mongoose.Schema({
   completed: {
     type: Boolean,
     default: false
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    required: true,
   }
 }, {
   timestamps: true
