@@ -11,7 +11,7 @@ User Routes
 POST /users/register - Register a new user
 POST /users/login - Log in a user
 GET /users/profile - Get the profile of the logged-in user
-POST /users/logout - Log out the user 
+POST /users/logout - Log out the user
 
 Task Routes
 
@@ -35,7 +35,6 @@ npm run dev - Start the application in development mode with nodemon
 npm run start-pm2 - Start the application with PM2 in production mode
 npm run restart-pm2 - Restart the application with PM2
 
-
 ## Dependencies
 
 bcryptjs
@@ -49,6 +48,20 @@ nodemon
 pm2
 Dev Dependencies
 cross-env
+
+## Run The Application
+
+# Start the application in development mode:
+
+npm run dev
+
+# Start the application in production mode:
+
+npm run start-pm2
+
+# Restart the application with PM2:
+
+npm run restart-pm2
 
 ## Installation
 
