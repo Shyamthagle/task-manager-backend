@@ -75,3 +75,9 @@ git clone git@github.com:Shyamthagle/task-manager-backend.git
 ## Project Vedio Link
 
 https://drive.google.com/file/d/1akIMinSITycCJL3CM6RlR50zqXlc2kRG/view?usp=drive_link
+
+## Live Application
+
+The live application is deployed on AWS and can be accessed
+
+http://65.0.131.234:8000
