@@ -11,7 +11,9 @@ require("dotenv").config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '65.2.141.75'  // Allow frontend origin
+}));
 app.use(express.json());
 
 // Routes
