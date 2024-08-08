@@ -6,7 +6,7 @@
       "url": "mongodb://localhost:27017/test_db"
     },
     "production": {
-      "url": "mongodb+srv://shyamthagle:OrdLmjEbZnE23laP@cluster0.6dfupmr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+      "url": "mongodb+srv://shyamthagle:OrdLmjEbZnE23laP@cluster0.6dfupmr.mongodb.net/task_manager?retryWrites=true&w=majority&appName=Cluster0"
     }
   }
   
