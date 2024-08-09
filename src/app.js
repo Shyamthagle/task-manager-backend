@@ -4,6 +4,7 @@ const connectDB = require("./config/database");
 const userRoute = require("./routes/userRoute");
 const taskRoute = require("./routes/taskRoute");
 const errorMiddleware = require("./middlewares/errorMiddleware");
+const path = require('path');
 
 // Load environment variables
 require("dotenv").config();
@@ -20,10 +21,12 @@ app.use("/task", taskRoute);
 
 // Error handling middleware
 app.use(errorMiddleware);
+app.use(express.static(path.join(__dirname, '/../web')));
 
 const startServer = async () => {
   try {
     await connectDB();
+    
     console.log("MongoDB connected successfully");
 
     app.get("/", (req, res) => {
