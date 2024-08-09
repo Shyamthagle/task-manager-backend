@@ -80,4 +80,4 @@ https://drive.google.com/file/d/1akIMinSITycCJL3CM6RlR50zqXlc2kRG/view?usp=drive
 
 The live application is deployed on AWS and can be accessed
 
-http://65.0.131.234:8000
+http://13.201.88.151:8000

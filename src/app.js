@@ -13,7 +13,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "13.201.88.151", // Allow frontend origin
+    origin: "13.201.88.151:4000", // Allow frontend origin
   })
 );
 app.use(express.json());
